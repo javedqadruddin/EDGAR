@@ -5,7 +5,10 @@ import csv
 from os import path
 
 SEC_SEARCH_URL = "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=%s&count=100&type=S-1&output=xml"
-OUTPUT_PATH = "../data/s-1_filing_data"
+HERE = path.abspath(path.dirname(__file__))
+S1_ROOT_DIR = path.dirname(HERE)
+OUTPUT_PATH = path.join(S1_ROOT_DIR, "data/s-1_filing_data")
+print(OUTPUT_PATH)
 
 with open(sys.argv[1]) as csvfile:
     reader = csv.DictReader(csvfile)
@@ -33,14 +36,19 @@ with open(sys.argv[1]) as csvfile:
 
         #get the text of the s-1 directly instead of going to the index page
         link = link.split('-index')[0] + '.txt'
-
+        print("trying url: " + link)
         filename = ticker + '_S-1.txt'
         try:
             s1_site = urllib2.urlopen(link)
-            with open(path.join(OUTPUT_PATH, filename), 'w') as f:
-                f.write(s1_site.read())
+            try:
+                print("preparing to write to: " + path.join(OUTPUT_PATH,filename))
+                with open(path.join(OUTPUT_PATH, filename), 'w') as f:
+                    f.write(s1_site.read())
+                got_txt_file += 1
+            except:
+                print("failed to write")
+                failed_to_get_txt_file += 1
             #os.system('wget -O ' + filename + ' ' + link)
-            got_txt_file += 1
         except:
             print("failed to get txt file")
             failed_to_get_txt_file += 1
