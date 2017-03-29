@@ -16,7 +16,7 @@ with open(sys.argv[1]) as csvfile:
     for row in reader:
         total_companies_tried += 1
         ticker = row['Symbol']
-        print "looking up ticker: " + ticker
+        print("looking up ticker: " + ticker)
 
         #getting a link to the S-1 by searching on the SEC website
         try:
