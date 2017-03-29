@@ -43,7 +43,6 @@ with open(sys.argv[1]) as csvfile:
             s1_site = urllib2.urlopen(link)
             try:
                 print("preparing to write to: " + path.join(OUTPUT_PATH,filename))
-                print(s1_site.read())
                 with open(path.join(OUTPUT_PATH, filename), 'w') as f:
                     f.write(s1_site.read())
                 got_txt_file += 1
